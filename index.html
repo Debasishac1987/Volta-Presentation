@@ -4,39 +4,1225 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Team Volta - Overview Presentation</title>
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 12222</section>
-				<section>Slide 222222</section>
-				<section>Slide 333</section>
-				<section>Slide 444</section>
-			</div>
-		</div>
+  :root {
+    --zf-blue: #003366;
+    --zf-light-blue: #0066CC;
+    --zf-accent: #00AAFF;
+    --sky-color: #E8740C;
+    --celp-color: #0088AA;
+    --bg-dark: #0A1628;
+    --bg-card: rgba(255,255,255,0.06);
+    --text-primary: #FFFFFF;
+    --text-secondary: #A0B4CC;
+    --gradient-sky: linear-gradient(135deg, #E8740C, #FF9A3C);
+    --gradient-celp: linear-gradient(135deg, #0088AA, #00C4E0);
+    --gradient-hero: linear-gradient(135deg, #003366 0%, #001833 50%, #0A1628 100%);
+  }
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
+  html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  /* ── Slide Base ── */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 20%, rgba(0,102,204,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(0,170,255,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .slide-content {
+    max-width: 1200px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Navigation ── */
+  .nav-dots {
+    position: fixed;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1000;
+  }
+
+  .nav-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--zf-accent);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .nav-dot:hover, .nav-dot.active {
+    background: var(--zf-accent);
+    box-shadow: 0 0 10px var(--zf-accent);
+  }
+
+  .nav-dot .tooltip {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--zf-blue);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .nav-dot:hover .tooltip { opacity: 1; }
+
+  /* ── Slide Counter ── */
+  .slide-counter {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    z-index: 1000;
+    font-weight: 500;
+  }
+
+  /* ── Typography ── */
+  .section-label {
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--zf-accent);
+    margin-bottom: 16px;
+  }
+
+  .slide-title {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    line-height: 1.15;
+  }
+
+  .slide-subtitle {
+    font-size: 20px;
+    color: var(--text-secondary);
+    font-weight: 300;
+    margin-bottom: 40px;
+    max-width: 700px;
+  }
+
+  .highlight { color: var(--zf-accent); }
+  .highlight-sky { color: var(--sky-color); }
+  .highlight-celp { color: var(--celp-color); }
+
+  /* ── Hero Slide ── */
+  .hero {
+    background: var(--gradient-hero);
+    text-align: center;
+    align-items: center;
+  }
+
+  .hero .slide-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(0,170,255,0.1);
+    border: 1px solid rgba(0,170,255,0.3);
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--zf-accent);
+    margin-bottom: 32px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .hero .slide-title {
+    font-size: 64px;
+    background: linear-gradient(135deg, #FFFFFF 0%, #A0B4CC 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-tagline {
+    font-size: 22px;
+    color: var(--text-secondary);
+    font-weight: 300;
+    font-style: italic;
+    margin-top: 8px;
+    margin-bottom: 40px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+  }
+
+  .hero-meta-item {
+    text-align: center;
+  }
+
+  .hero-meta-item .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--zf-accent);
+  }
+
+  .hero-meta-item .label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* ── Cards Grid ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+  }
+
+  .card:hover {
+    border-color: rgba(0,170,255,0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+
+  .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  .card-icon.sky { background: rgba(232,116,12,0.15); }
+  .card-icon.celp { background: rgba(0,136,170,0.15); }
+  .card-icon.generic { background: rgba(0,170,255,0.15); }
+
+  .card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .card p, .card li {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li::before {
+    content: '>';
+    color: var(--zf-accent);
+    font-weight: 700;
+    margin-right: 8px;
+  }
+
+  /* ── Split Layout ── */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .split-panel {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 36px;
+  }
+
+  .split-panel.sky-panel {
+    border-top: 3px solid var(--sky-color);
+  }
+
+  .split-panel.celp-panel {
+    border-top: 3px solid var(--celp-color);
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .panel-tag {
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .panel-tag.sky { background: rgba(232,116,12,0.2); color: var(--sky-color); }
+  .panel-tag.celp { background: rgba(0,136,170,0.2); color: var(--celp-color); }
+
+  .panel-title {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .module-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .module-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .module-list li:last-child { border-bottom: none; }
+
+  .module-list li .bullet {
+    flex-shrink: 0;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 7px;
+  }
+
+  .module-list li .bullet.sky { background: var(--sky-color); }
+  .module-list li .bullet.celp { background: var(--celp-color); }
+
+  .module-list li strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* ── Expertise Tags ── */
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .tag {
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    background: rgba(0,170,255,0.1);
+    border: 1px solid rgba(0,170,255,0.2);
+    color: var(--zf-accent);
+  }
+
+  .tag.domain {
+    background: rgba(0,170,255,0.15);
+    border-color: rgba(0,170,255,0.3);
+  }
+
+  /* ── Timeline ── */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+    margin-top: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--zf-accent), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 32px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -32px;
+    top: 6px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--zf-accent);
+    box-shadow: 0 0 10px var(--zf-accent);
+  }
+
+  .timeline-item .time-label {
+    font-size: 12px;
+    color: var(--zf-accent);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .timeline-item h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .timeline-item p {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  /* ── Demo Table ── */
+  .demo-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    margin-top: 24px;
+  }
+
+  .demo-table th {
+    text-align: left;
+    padding: 12px 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .demo-table td {
+    padding: 16px 20px;
+    font-size: 14px;
+    background: var(--bg-card);
+  }
+
+  .demo-table tr td:first-child {
+    border-radius: 10px 0 0 10px;
+  }
+
+  .demo-table tr td:last-child {
+    border-radius: 0 10px 10px 0;
+  }
+
+  .demo-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .demo-badge.sky { background: rgba(232,116,12,0.2); color: var(--sky-color); }
+  .demo-badge.celp { background: rgba(0,136,170,0.2); color: var(--celp-color); }
+
+  /* ── Architecture Diagram ── */
+  .arch-diagram {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 40px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .device-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 24px;
+  }
+
+  .device-box {
+    background: rgba(0,170,255,0.1);
+    border: 1px solid rgba(0,170,255,0.3);
+    border-radius: 12px;
+    padding: 16px 28px;
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 160px;
+  }
+
+  .arrow-down {
+    font-size: 28px;
+    color: var(--zf-accent);
+    margin: 8px 0;
+  }
+
+  .layer-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 12px auto;
+    max-width: 700px;
+  }
+
+  .layer-box h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--zf-accent);
+  }
+
+  .layer-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .layer-item {
+    padding: 4px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    background: rgba(255,255,255,0.08);
+    color: var(--text-secondary);
+  }
+
+  /* ── Contact Slide ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+  }
+
+  .contact-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .contact-card .role {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--zf-accent);
+    margin-bottom: 8px;
+  }
+
+  .contact-card .name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .contact-card .email {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  /* ── Slide Images ── */
+  .slide-image-container {
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .slide-image-container img {
+    max-width: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .slide-image-container.compact img {
+    max-height: 340px;
+    object-fit: contain;
+  }
+
+  .image-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 32px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .image-row img {
+    max-width: 48%;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .image-caption {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── Hero Header Image ── */
+  .hero-header-img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin-bottom: 32px;
+    opacity: 0.7;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* ── Team Member Cards with Photos ── */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .member-photo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.15);
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .member-photo:hover {
+    border-color: var(--zf-accent);
+    transform: scale(1.1);
+    box-shadow: 0 0 16px rgba(0,170,255,0.3);
+  }
+
+  .member-name {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  .member-role {
+    font-size: 9px;
+    color: var(--zf-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .card .team-grid .member-photo {
+    width: 64px;
+    height: 64px;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-in {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  .animate-in:nth-child(2) { animation-delay: 0.1s; }
+  .animate-in:nth-child(3) { animation-delay: 0.2s; }
+  .animate-in:nth-child(4) { animation-delay: 0.3s; }
+
+  /* ── Print / PDF ── */
+  @media print {
+    html { scroll-snap-type: none; }
+    .slide { page-break-after: always; min-height: auto; padding: 40px; }
+    .nav-dots, .slide-counter { display: none; }
+  }
+
+  /* ── Keyboard hint ── */
+  .keyboard-hint {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: var(--text-secondary);
+    opacity: 0.5;
+    z-index: 1000;
+  }
+
+  .keyboard-hint kbd {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-family: inherit;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation Dots -->
+<nav class="nav-dots" id="navDots"></nav>
+<div class="slide-counter" id="slideCounter">1 / 8</div>
+<div class="keyboard-hint"><kbd>&darr;</kbd> / <kbd>&uarr;</kbd> to navigate &middot; <kbd>F</kbd> fullscreen</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 1: Title -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="slide hero" data-title="Title">
+  <div class="slide-content">
+    <img src="Header.png" alt="ZF Commercial Vehicles" class="hero-header-img animate-in">
+    <div class="hero-badge animate-in">ZF SCALAR Engineering</div>
+    <h1 class="slide-title animate-in">Team Aryabhata</h1>
+    <p class="hero-tagline animate-in">Engineering Precision. Powering Possibilities.</p>
+    <p class="slide-subtitle animate-in">
+      Edge Connectivity &amp; CELP Services for Next-Gen Telematics
+    </p>
+    <div class="hero-meta animate-in">
+      <div class="hero-meta-item">
+        <div class="value">2</div>
+        <div class="label">Sub-Teams</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="value">3</div>
+        <div class="label">Edge Devices</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="value">6+</div>
+        <div class="label">CELP Services</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="value">10+</div>
+        <div class="label">SkyApp Modules</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 2: Team Introduction -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="slide" data-title="Team Introduction">
+  <div class="slide-content">
+    <div class="section-label">Who We Are</div>
+    <h2 class="slide-title">Team <span class="highlight">Introduction</span></h2>
+    <p class="slide-subtitle">
+      Responsible for development, deployment, and maintenance of applications for SCALAR Edge Connectivity devices and CELP micro-services.
+    </p>
+    <div class="cards-grid">
+      <div class="card" style="border-top:3px solid var(--sky-color)">
+        <div class="card-icon sky">&#9881;</div>
+        <h3>Aryabhata Legacy <span style="font-size:12px;color:var(--sky-color)">(SkyApp)</span></h3>
+        <p style="margin-bottom:8px">Maintain, enhance, and support all existing features of the <strong style="color:var(--sky-color)">SkyApp</strong> ecosystem.</p>
+        <div class="team-grid">
+          <div class="member">
+            <img src="Sadhna.png" alt="Sadhna Maurya" class="member-photo">
+            <span class="member-name">Sadhna Maurya</span>
+          </div>
+          <div class="member">
+            <img src="Sahil.png" alt="Sahilahamed I Kamdod" class="member-photo">
+            <span class="member-name">Sahilahamed I Kamdod</span>
+          </div>
+          <div class="member">
+            <img src="SaiHasini.png" alt="Saihasini Sidda" class="member-photo">
+            <span class="member-name">Saihasini Sidda</span>
+          </div>
+          <div class="member">
+            <img src="Ishwarya.png" alt="Ishwarya Ramesh" class="member-photo">
+            <span class="member-name">Ishwarya Ramesh</span>
+          </div>
+          <div class="member">
+            <img src="Dinesh.png" alt="Dinesh Mutyam" class="member-photo">
+            <span class="member-name">Dinesh Mutyam</span>
+          </div>
+          <div class="member">
+            <img src="Prahalada.png" alt="Bhakta Prahalada Mopuri" class="member-photo">
+            <span class="member-name">Bhakta Prahalada M.</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--celp-color)">
+        <div class="card-icon celp">&#9889;</div>
+        <h3>Aryabhata Nova <span style="font-size:12px;color:var(--celp-color)">(CELP)</span></h3>
+        <p style="margin-bottom:8px">Re-architect SkyApp features into scalable modules under the <strong style="color:var(--celp-color)">CELP</strong> framework.</p>
+        <div class="team-grid">
+          <div class="member">
+            <img src="Manorama.png" alt="Bala Manorama Movva" class="member-photo">
+            <span class="member-name">Bala Manorama Movva</span>
+          </div>
+          <div class="member">
+            <img src="Ayushi.png" alt="Ayushi Kumari" class="member-photo">
+            <span class="member-name">Ayushi Kumari</span>
+          </div>
+          <div class="member">
+            <img src="Shashank.png" alt="Shashank Vodela" class="member-photo">
+            <span class="member-name">Shashank Vodela</span>
+          </div>
+          <div class="member">
+            <img src="Hari.png" alt="Pydi Hari" class="member-photo">
+            <span class="member-name">Pydi Hari</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid var(--zf-accent)">
+        <div class="card-icon generic">&#128736;</div>
+        <h3>Leadership</h3>
+        <p style="margin-bottom:8px">Guiding vision, architecture, and delivery across both platforms.</p>
+        <div class="team-grid">
+          <div class="member">
+            <img src="alok.png" alt="Alok Raj" class="member-photo">
+            <span class="member-name">Alok Raj</span>
+            <span class="member-role">Tech Lead / PO</span>
+          </div>
+          <div class="member">
+            <img src="Prajwal.png" alt="Prajwal Awade" class="member-photo">
+            <span class="member-name">Prajwal Awade</span>
+            <span class="member-role">Architect</span>
+          </div>
+          <div class="member">
+            <img src="giri.png" alt="Govardhana Giridhar Musunuri" class="member-photo">
+            <span class="member-name">Govardhana Giridhar M.</span>
+            <span class="member-role">Test Lead</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 3: Mission & Vision -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="slide" data-title="Mission & Vision">
+  <div class="slide-content">
+    <div class="section-label">Why We Exist</div>
+    <h2 class="slide-title">Mission &amp; <span class="highlight">Goals</span></h2>
+    <p class="slide-subtitle" style="max-width:900px">
+      <em>"One vision, two missions"</em> &mdash; accelerating progress and ensuring quality delivery on both Legacy SkyApp and the evolving CELP framework.
+    </p>
+    <div class="cards-grid">
+      <div class="card" style="border-left:3px solid var(--zf-accent)">
+        <h3>Vision</h3>
+        <p>Build customer trust with a <strong style="color:#fff">seamless driver experience</strong> on telematics devices by enhancing features, adding stability, leveraging advanced tech stacks, and building best-in-class solutions.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--sky-color)">
+        <h3 class="highlight-sky">Mission - Legacy (SkyApp)</h3>
+        <p>Ensure <strong style="color:#fff">uninterrupted service</strong> and progressive improvements to critical SkyApp modules &mdash; ECO, Planning, Tachograph, Reefer, Activity Manager &mdash; sustaining business continuity and user trust.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--celp-color)">
+        <h3 class="highlight-celp">Mission - Nova (CELP)</h3>
+        <p>Enable <strong style="color:#fff">seamless transition</strong> of SkyApp functionality into CELP micro-services, focusing on modularity, performance, and ease of integration with future platforms.</p>
+      </div>
+    </div>
+    <div class="slide-image-container compact" style="margin-top:28px">
+      <img src="3.png" alt="SCALAR Eco-System Architecture">
+      <div class="image-caption">SCALAR Edge Eco-System &mdash; Device to Cloud to Customer Dashboard</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 4: Products We Work On -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="slide" data-title="Products">
+  <div class="slide-content">
+    <div class="section-label">What We Build</div>
+    <h2 class="slide-title">Products We <span class="highlight">Work On</span></h2>
+    <p class="slide-subtitle">SCALAR Edge Connectivity devices generating data for the SCALAR pipeline and CELP platform.</p>
+
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:32px;">
+      <div class="card" style="padding:0; overflow:hidden; border-radius:16px;">
+        <img src="EVO_Touch.png" alt="SCALAR EVO Touch" style="width:100%; border-radius:16px 16px 0 0;">
+        <div style="padding:16px 20px;">
+          <h3 style="font-size:16px; margin-bottom:6px;">EVO <span class="highlight">Touch</span></h3>
+          <p style="font-size:12px; color:var(--text-secondary); line-height:1.5;">In-cab touchscreen driver terminal with full SkyApp interface, service times, tachograph &amp; eco-driving.</p>
+        </div>
+      </div>
+      <div class="card" style="padding:0; overflow:hidden; border-radius:16px;">
+        <img src="EVO_Flow.png" alt="SCALAR EVO Flow" style="width:100%; border-radius:16px 16px 0 0;">
+        <div style="padding:16px 20px;">
+          <h3 style="font-size:16px; margin-bottom:6px;">EVO <span class="highlight">Flow</span></h3>
+          <p style="font-size:12px; color:var(--text-secondary); line-height:1.5;">Compact tracking device for fleet visibility, GPS tracking, asset management &amp; dispatching.</p>
+        </div>
+      </div>
+      <div class="card" style="padding:0; overflow:hidden; border-radius:16px;">
+        <img src="EVO_Gaurd.png" alt="SCALAR EVO Guard" style="width:100%; border-radius:16px 16px 0 0;">
+        <div style="padding:16px 20px;">
+          <h3 style="font-size:16px; margin-bottom:6px;">EVO <span class="highlight">Guard</span></h3>
+          <p style="font-size:12px; color:var(--text-secondary); line-height:1.5;">Advanced telematics unit with TPMS, speed &amp; load history, tire monitoring and vehicle insights.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-image-container compact" style="margin-top:24px;">
+      <img src="1.png" alt="FMS Device Feature Ecosystem" style="background:#fff; padding:12px; max-height:260px;">
+      <div class="image-caption">FMS Device Capabilities &mdash; Modules We Own</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 5: Modules - SkyApp vs CELP -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="slide" data-title="Modules & Features">
+  <div class="slide-content">
+    <div class="section-label">What We Own</div>
+    <h2 class="slide-title">Modules &amp; <span class="highlight">Features</span></h2>
+    <p class="slide-subtitle">Clear separation of ownership between Legacy SkyApp and CELP framework.</p>
+
+    <div class="split">
+      <!-- SkyApp Panel -->
+      <div class="split-panel sky-panel">
+        <div class="panel-header">
+          <span class="panel-tag sky">SkyApp</span>
+          <span class="panel-title">Legacy Modules</span>
+        </div>
+        <ul class="module-list">
+          <li><span class="bullet sky"></span><div><strong>ECO (Eco-Driving)</strong> &mdash; Real-time driver behavior scoring and feedback for fuel efficiency</div></li>
+          <li><span class="bullet sky"></span><div><strong>Planning &amp; Navigation</strong> &mdash; Route planning, trip management, and on-device navigation</div></li>
+          <li><span class="bullet sky"></span><div><strong>Tachograph</strong> &mdash; Digital tachograph data download, display, and compliance management</div></li>
+          <li><span class="bullet sky"></span><div><strong>Reefer (Refrigeration)</strong> &mdash; Temperature monitoring and control for cold-chain transport</div></li>
+          <li><span class="bullet sky"></span><div><strong>Activity Manager</strong> &mdash; Driver activity tracking, work-rest timers, and compliance alerts</div></li>
+          <li><span class="bullet sky"></span><div><strong>Messaging &amp; Workflow</strong> &mdash; Two-way messaging and task management between driver and dispatch</div></li>
+        </ul>
+      </div>
+
+      <!-- CELP Panel -->
+      <div class="split-panel celp-panel">
+        <div class="panel-header">
+          <span class="panel-tag celp">CELP</span>
+          <span class="panel-title">Next-Gen Services</span>
+        </div>
+        <ul class="module-list">
+          <li><span class="bullet celp"></span><div><strong>AIS140</strong> &mdash; India-specific GPS compliance service with VLTD protocol support</div></li>
+          <li><span class="bullet celp"></span><div><strong>ECO Service</strong> &mdash; Re-architected eco-driving as a standalone CELP micro-service</div></li>
+          <li><span class="bullet celp"></span><div><strong>Tacho Service</strong> &mdash; Tachograph data handling migrated to distributed, scalable architecture</div></li>
+          <li><span class="bullet celp"></span><div><strong>RDD (Remote Data Download)</strong> &mdash; Remote tachograph data retrieval over-the-air</div></li>
+          <li><span class="bullet celp"></span><div><strong>Drive-State</strong> &mdash; Real-time vehicle and driver state aggregation service</div></li>
+          <li><span class="bullet celp"></span><div><strong>Activity Manager</strong> &mdash; Next-gen driver activity as a composable CELP service</div></li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:32px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:24px; text-align:center;">
+      <h4 style="color:var(--zf-accent); font-size:15px; margin-bottom:16px; text-transform:uppercase; letter-spacing:2px;">Edge Device Service Dependencies</h4>
+      <img src="5.png" alt="Edge Device Service Dependencies - CELP Core and CELP Services Architecture" style="width:100%; max-width:1100px; border-radius:12px; background:#fff; padding:16px; box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+      <div style="display:flex; justify-content:center; gap:32px; margin-top:16px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="width:12px; height:12px; border-radius:3px; background:rgba(255,200,200,0.5); border:1px solid rgba(255,150,150,0.5);"></span>
+          <span style="font-size:11px; color:var(--text-secondary);">Platform Services</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="width:12px; height:12px; border-radius:3px; background:rgba(200,255,200,0.3); border:1px solid rgba(150,220,150,0.5);"></span>
+          <span style="font-size:11px; color:var(--text-secondary);">CELP Core</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="width:12px; height:12px; border-radius:3px; background:rgba(200,230,255,0.3); border:1px solid rgba(150,200,255,0.5);"></span>
+          <span style="font-size:11px; color:var(--text-secondary);">CELP Services</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 6: Technical Expertise -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="slide" data-title="Expertise">
+  <div class="slide-content">
+    <div class="section-label">How We Build</div>
+    <h2 class="slide-title">Our <span class="highlight">Expertise</span></h2>
+    <p class="slide-subtitle">Deep domain knowledge combined with modern engineering practices.</p>
+
+    <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="card">
+        <h3 style="margin-bottom:16px">Domain Expertise</h3>
+        <div class="tags-container">
+          <span class="tag domain">Edge Connectivity</span>
+          <span class="tag domain">IoT</span>
+          <span class="tag domain">Telematics</span>
+          <span class="tag domain">Fleet Management (FMS)</span>
+          <span class="tag domain">Commercial Vehicles</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:16px">Tech Stack</h3>
+        <div class="tags-container">
+          <span class="tag">C++</span>
+          <span class="tag">Python</span>
+          <span class="tag">PyTest</span>
+          <span class="tag">GTest</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Automation</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:16px">Architecture Patterns</h3>
+        <div class="tags-container">
+          <span class="tag">Monolithic (SkyApp)</span>
+          <span class="tag">Distributed Services (CELP)</span>
+          <span class="tag">Micro-services</span>
+          <span class="tag">Event-Driven</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:16px">Tooling &amp; DevOps</h3>
+        <div class="tags-container">
+          <span class="tag">GitLab CI/CD</span>
+          <span class="tag">Jira</span>
+          <span class="tag">Docker Containers</span>
+          <span class="tag">Automated Testing</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-image-container compact" style="margin-top:28px">
+      <img src="4.png" alt="Technology Stack - Core Application, Build System, DevOps, Architectures" style="background:#fff; padding:8px;">
+      <div class="image-caption">Technology Stack &mdash; Core Application, Build System &amp; DevOps, Target Architectures</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 7: Demo Plan -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="slide" data-title="Demo">
+  <div class="slide-content">
+    <div class="section-label">Live Showcase</div>
+    <h2 class="slide-title">Demo <span class="highlight">Highlights</span></h2>
+    <p class="slide-subtitle">Key demonstrations covering both SkyApp and CELP capabilities.</p>
+
+    <table class="demo-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Demo Topic</th>
+          <th>Platform</th>
+          <th>What We'll Show</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>Device Setup &amp; Sanity Testing</strong></td>
+          <td><span class="demo-badge sky">SkyApp</span></td>
+          <td style="color:var(--text-secondary)">Complete device setup workflow and end-to-end sanity testing</td>
+          <td>5 min</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Reefer Temperature Monitoring</strong></td>
+          <td><span class="demo-badge sky">SkyApp</span></td>
+          <td style="color:var(--text-secondary)">Reefer temperature captured by TG device, transmitted to Scalar Evo Touch, and visible on Flex app</td>
+          <td>5 min</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>Evo Touch &mdash; Tacho, Login &amp; ECO</strong></td>
+          <td><span class="demo-badge sky">SkyApp</span></td>
+          <td style="color:var(--text-secondary)">Scalar Evo Touch configuration with Tacho to view login and ECO data</td>
+          <td>5 min</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>CELP ECO Service</strong></td>
+          <td><span class="demo-badge celp">CELP</span></td>
+          <td style="color:var(--text-secondary)">Micro-service ECO module running on CELP framework</td>
+          <td>5 min</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>Drive-State Service</strong></td>
+          <td><span class="demo-badge celp">CELP</span></td>
+          <td style="color:var(--text-secondary)">Real-time vehicle and driver state aggregation pipeline</td>
+          <td>4 min</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>Tachograph Service</strong></td>
+          <td><span class="demo-badge celp">CELP</span></td>
+          <td style="color:var(--text-secondary)">Tachograph data processing and compliance via CELP micro-service</td>
+          <td>4 min</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:32px; display:flex; gap:24px; justify-content:center">
+      <div class="card" style="text-align:center; flex:1; max-width:200px;">
+        <div style="font-size:32px; font-weight:800; color:var(--sky-color)">~15 min</div>
+        <div style="font-size:12px; color:var(--text-secondary); margin-top:4px">SkyApp Demos</div>
+      </div>
+      <div class="card" style="text-align:center; flex:1; max-width:200px;">
+        <div style="font-size:32px; font-weight:800; color:var(--celp-color)">~13 min</div>
+        <div style="font-size:12px; color:var(--text-secondary); margin-top:4px">CELP Demos</div>
+      </div>
+      <div class="card" style="text-align:center; flex:1; max-width:200px;">
+        <div style="font-size:32px; font-weight:800; color:var(--zf-accent)">~5 min</div>
+        <div style="font-size:12px; color:var(--text-secondary); margin-top:4px">Q&A</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 8: Thank You / Contact -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section class="slide hero" data-title="Contact">
+  <div class="slide-content">
+    <div class="section-label animate-in">Get In Touch</div>
+    <h2 class="slide-title animate-in" style="font-size:52px; background:linear-gradient(135deg,#fff,#A0B4CC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Thank You</h2>
+    <p class="slide-subtitle animate-in" style="text-align:center; margin:0 auto 40px">
+      Questions, feedback, or collaboration opportunities? Reach out to us.
+    </p>
+
+    <div class="contact-grid animate-in">
+      <div class="contact-card">
+        <div class="role">Tech Lead / Product Owner</div>
+        <div class="name">Alok Raj</div>
+        <div class="email">alok.raj@zf.com</div>
+      </div>
+      <div class="contact-card">
+        <div class="role">Architect</div>
+        <div class="name">Prajwal Awade</div>
+        <div class="email">prajwalgajanan.awade@zf.com</div>
+      </div>
+      <div class="contact-card">
+        <div class="role">Test Lead</div>
+        <div class="name">Govardhana Giridhar Musunuri</div>
+        <div class="email">govardhanagiridhar.musunuri2@zf.com</div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px; text-align:center">
+      <p style="font-size:14px; color:var(--text-secondary)">
+        Team Email: <strong style="color:#fff">ZF-SCALAR-Team-Aryabhata@zf.com</strong><br>
+        MS Teams: <strong style="color:#fff">Aryabhata's Team</strong><br>
+        Jira: <strong style="color:#fff">Aryabhata | Board</strong><br>
+        GitLab: <strong style="color:#fff">https://gitlab.transics-cicd.aws.zf.com/celp-svc</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- JavaScript -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const navDotsContainer = document.getElementById('navDots');
+  const counter = document.getElementById('slideCounter');
+
+  // Build nav dots
+  slides.forEach((slide, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.innerHTML = `<span class="tooltip">${slide.dataset.title || 'Slide ' + (i+1)}</span>`;
+    dot.addEventListener('click', () => slide.scrollIntoView({ behavior: 'smooth' }));
+    navDotsContainer.appendChild(dot);
+  });
+
+  // Track active slide
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(slides).indexOf(entry.target);
+        document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+        counter.textContent = `${idx + 1} / ${slides.length}`;
+
+        // Trigger animations
+        entry.target.querySelectorAll('.animate-in').forEach(el => {
+          el.style.animationPlayState = 'running';
+        });
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    const currentIdx = parseInt(counter.textContent) - 1;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+      e.preventDefault();
+      if (currentIdx < slides.length - 1) slides[currentIdx + 1].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault();
+      if (currentIdx > 0) slides[currentIdx - 1].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+})();
+</script>
 	</body>
 </html>
